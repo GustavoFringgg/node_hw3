@@ -65,15 +65,18 @@ const posts = {
       if (body && body.content != undefined && body.content.trim()) {
         let id = req.params.id;
         if (!mongoose.Types.ObjectId.isValid(id)) {
-          handleError(res, "無效的ID格式");
-          return;
+          return handleError(res, "無效的ID格式");
         }
         const Patch_data = await Post.findById(id); //Patch_data 整個物件
-        const new_post = await Post.findByIdAndUpdate(id, body, {
-          new: true,
-          runValidators: true,
-        });
-        handleSuccess(res, `${new_post.name}的貼文已被更新`, new_post);
+        if (Patch_data) {
+          const new_post = await Post.findByIdAndUpdate(id, body, {
+            new: true,
+            runValidators: true,
+          });
+          handleSuccess(res, `${new_post.name}的貼文已被更新`, new_post);
+        } else {
+          handleError(res, "查無此ID");
+        }
       } else {
         handleError(res, "貼文未填寫");
       }
