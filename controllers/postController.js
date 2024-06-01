@@ -18,6 +18,7 @@ const posts = {
           name: body.name,
           content: body.content,
           tags: body.tags,
+          image: body.image,
           type: body.type,
         });
         handleSuccess(res, "新增貼文成功", new_post);
