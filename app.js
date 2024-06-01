@@ -6,6 +6,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 var app = express();
 
+const handleSuccess = require("./utils/handleSuccess");
+const handleError = require("./utils/handleError");
+
 //router引入
 var postsRouter = require("./routes/post");
 //mongodb引入
@@ -19,5 +22,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/posts", postsRouter);
+
+app.use((err, req, res, next) => {
+  handleError(res, err.message || "內部服務器錯誤");
+});
 
 module.exports = app;

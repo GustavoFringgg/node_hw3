@@ -40,6 +40,10 @@ const posts = {
   async deletePosts(req, res, next) {
     try {
       let id = req.params.id;
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        handleError(res, "無效的ID格式");
+        return;
+      }
       let delete_data = await Post.findById(id);
       if (delete_data) {
         await Post.findByIdAndDelete(id);
@@ -48,7 +52,6 @@ const posts = {
         handleError(res, "查無此ID");
       }
     } catch (error) {
-      console.error("刪除貼文時發生錯誤:", error);
       handleError(res, error);
     }
   },
@@ -61,6 +64,10 @@ const posts = {
       }
       if (body && body.content != undefined && body.content.trim()) {
         let id = req.params.id;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+          handleError(res, "無效的ID格式");
+          return;
+        }
         const Patch_data = await Post.findById(id); //Patch_data 整個物件
         const new_post = await Post.findByIdAndUpdate(id, body, {
           new: true,
@@ -71,7 +78,7 @@ const posts = {
         handleError(res, "貼文未填寫");
       }
     } catch (error) {
-      handleError(res, error);
+      next(error);
     }
   },
 };
