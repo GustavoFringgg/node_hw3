@@ -17,7 +17,6 @@ const posts = {
         const new_post = await Post.create({
           name: body.name,
           content: body.content,
-          tags: body.tags,
           image: body.image,
           type: body.type,
         });
