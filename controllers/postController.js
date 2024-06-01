@@ -25,7 +25,7 @@ const posts = {
         handleError(res, "欄位填寫錯誤");
       }
     } catch (error) {
-      handleError(res, error);
+      next(error);
     }
   },
 
@@ -52,7 +52,7 @@ const posts = {
         handleError(res, "查無此ID");
       }
     } catch (error) {
-      handleError(res, error);
+      next(error);
     }
   },
 
